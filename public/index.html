@@ -3,31 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fake Gods | Vitrine de Terror</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">">
-    <link rel="stylesheet" href="<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>">
-    
+    <title>Fake Gods - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .img-carousel-custom {
+            height: 450px;
+            object-fit: cover;
+        }
+    </style>
 </head>
-<body class="bg-dark text-white">
+<body class="bg-dark text-light" style="background-color: #0b0f19 !important;">
 
-    <header class="p-3 bg-black border-bottom border-secondary mb-4">
-        <div class="container text-center">
-            <h1 class="text-danger fw-bold">FAKE GODS</h1>
-            <p>Seu Universo de Horror Dinâmico</p>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black sticky-top border-bottom border-secondary">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-danger fs-3" href="index.html" style="letter-spacing: 1px;">FAKE GODS</a>
+            <button class="navbar-expand" style="display:none;"></button>
+            <span class="navbar-text text-uppercase d-none d-sm-block small" style="letter-spacing: 2px;">Universo de Terror</span>
         </div>
-    </header>
+    </nav>
 
-    <main class="container">
-        <div class="row" id="catalogo-itens">
+    <div class="container my-4">
+        <h2 class="mb-3 text-uppercase fw-bold" style="letter-spacing: 2px;">Destaques Macabros</h2>
+        
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators" id="carouselIndicatorsContainer"></div>
+            
+            <div class="carousel-inner rounded" id="carouselContainer"></div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <h2 class="mb-4 text-uppercase" style="letter-spacing: 2px;">Todo o Acervo</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="cardsContainer"></div>
+    </div>
+
+    <footer class="bg-black py-4 mt-5 border-top border-danger border-2">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-center text-lg-start">
+                    <h5 class="fw-bold">Autor do Projeto</h5>
+                    <p class="mb-1 text-secondary small">Aluno: <span class="text-light">Gabriel Eloi Gomes De Oliveira</span></p>
+                    <p class="text-secondary small mb-0">Curso: <span class="text-light">Engenharia de Software / PUC Minas</span></p>
+                </div>
+                <div class="col-lg-6 text-center text-lg-end mt-3 mt-lg-0">
+                    <p class="mb-0 text-secondary small">&copy; 2026 FAKE GODS. Todos os direitos reservados.</p>
+                </div>
             </div>
-    </main>
-
-    <footer class="text-center p-4 bg-black border-top border-secondary mt-5">
-        Copyright (c) Fake Gods
+        </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const carouselIndicatorsContainer = document.getElementById("carouselIndicatorsContainer");
+            const carouselContainer = document.getElementById("carouselContainer");
+            const cardsContainer = document.getElementById("cardsContainer");
+
+            const itensDestaque = dadosMidia.titulos.filter(t => t.destaque);
+            
+            // 1. Montar Carrossel dinamicamente
+            itensDestaque.forEach((item, index) => {
+                const isActive = index === 0 ? "active" : "";
+                const isCurrent = index === 0 ? 'aria-current="true"' : '';
+
+                carouselIndicatorsContainer.innerHTML += `
+                    <button type="button" 
+                            data-bs-target="#carouselExampleCaptions" 
+                            data-bs-slide-to="${index}" 
+                            class="${isActive}" 
+                            ${isCurrent} 
+                            aria-label="Slide ${index + 1}">
+                    </button>
+                `;
+
+                carouselContainer.innerHTML += `
+                    <div class="carousel-item ${isActive}">
+                        <img src="${item.imagem}" class="d-block w-100 img-carousel-custom opacity-75" alt="${item.nome}">
+                        <div class="carousel-caption d-none d-md-block bg-black bg-opacity-75 rounded p-3 border border-secondary">
+                            <span class="badge bg-danger mb-2">${item.tipo}</span>
+                            <h5 class="fw-bold text-white">${item.nome}</h5>
+                            <p class="text-light opacity-75 small">${item.descricao_curta}</p>
+                            <a href="detalhes.html?id=${item.id}" class="btn btn-sm btn-outline-danger mt-1">Ver Detalhes</a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // 2. Montar Grid de Cards (Substituído os estilos manuais por classes bg-dark, bg-opacity e bordas do Bootstrap)
+            dadosMidia.titulos.forEach(item => {
+                cardsContainer.innerHTML += `
+                    <div class="col">
+                        <div class="card h-100 bg-dark bg-opacity-50 border border-secondary text-white shadow-sm">
+                            <img src="${item.imagem}" class="card-img-top" alt="${item.nome}" style="height: 220px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <span class="badge bg-secondary align-self-start mb-2">${item.tipo}</span>
+                                <h5 class="card-title fw-bold text-white mb-2">${item.nome}</h5>
+                                <p class="card-text text-secondary small flex-grow-1">${item.descricao_curta}</p>
+                                <a href="detalhes.html?id=${item.id}" class="btn btn-danger w-100 mt-3 fw-semibold">Visualizar Detalhes</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        });
+    </script>
+
 </body>
 </html>

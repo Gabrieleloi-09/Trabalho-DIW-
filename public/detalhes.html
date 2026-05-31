@@ -9,9 +9,114 @@
 </head>
 <body class="bg-dark">
 
-    <main class="container my-5" id="detalhe-item">
-        </main>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Gods - Detalhes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .img-principal-custom {
+            max-height: 500px;
+            object-fit: cover;
+        }
+        .avatar-personagem-custom {
+            height: 250px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="bg-dark text-light" style="background-color: #0b0f19 !important;">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black mb-4 border-bottom border-secondary">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-danger fs-3" href="index.html">FAKE GODS</a>
+            <a href="index.html" class="btn btn-outline-light btn-sm">← Voltar para Home</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section id="secao-info-geral" class="mb-5">
+            </section>
+
+        <hr class="border-secondary my-5">
+
+        <section id="secao-fotos-vinculadas" class="mb-5">
+            <h3 class="text-uppercase mb-4 fw-bold" style="letter-spacing: 1px;">Entidades Relacionadas (Personagens)</h3>
+            
+            <div class="card-group shadow-sm" id="personagensContainer">
+                </div>
+        </section>
+    </div>
+
+    <footer class="bg-black py-4 mt-5 text-center text-secondary border-top border-secondary">
+        <div class="container">
+            <p class="mb-0 small">&copy; 2026 FAKE GODS. Interface Dinâmica de Entidades Relacionadas.</p>
+        </div>
+    </footer>
 
     <script src="app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const idParam = parseInt(params.get('id'));
+
+            const titulo = dadosMidia.titulos.find(t => t.id === idParam);
+
+            if (!titulo) {
+                document.getElementById("secao-info-geral").innerHTML = `<div class="alert alert-danger">Item não encontrado no catálogo.</div>`;
+                return;
+            }
+
+            document.title = `Fake Gods - ${titulo.nome}`;
+
+            // Renderizar Seção 1 (Informações Gerais)
+            const secaoInfo = document.getElementById("secao-info-geral");
+            secaoInfo.innerHTML = `
+                <div class="row g-4 align-items-center">
+                    <div class="col-md-5 text-center">
+                        <img src="${titulo.imagem}" class="img-fluid rounded border border-danger border-2 img-principal-custom w-100 shadow" alt="${titulo.nome}">
+                    </div>
+                    
+                    <div class="col-md-7">
+                        <span class="badge bg-danger mb-2 text-uppercase px-3 py-2">${titulo.tipo}</span>
+                        <h1 class="display-5 fw-bold text-white mb-3">${titulo.nome}</h1>
+                        <p class="lead text-secondary">${titulo.sinopse}</p>
+                        
+                        <div class="mt-4 p-3 rounded bg-dark bg-opacity-50 border border-secondary">
+                            <p class="mb-2"><strong>Diretor / Criador:</strong> <span class="text-danger fw-semibold">${titulo.direcao}</span></p>
+                            <p class="mb-0"><strong>Trilha Sonora de Destaque:</strong> <span class="text-info">${titulo.trilha_sonora}</span></p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Renderizar Seção 2 usando a estrutura EXATA do componente card-group do Bootstrap
+            const personagensContainer = document.getElementById("personagensContainer");
+            
+            if (titulo.personagens && titulo.personagens.length > 0) {
+                titulo.personagens.forEach(p => {
+                    personagensContainer.innerHTML += `
+                        <div class="card bg-dark text-white border border-secondary">
+                            <img src="${p.img}" class="card-img-top avatar-personagem-custom" alt="${p.nome}">
+                            <div class="card-body">
+                                <h5 class="card-title text-danger fw-bold">${p.nome}</h5>
+                                <p class="card-text text-secondary small">${p.bio}</p>
+                            </div>
+                            <div class="card-footer bg-black bg-opacity-50 border-top border-secondary">
+                                <small class="text-muted">Gênero: Terror / Slasher</small>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                // Removemos a classe card-group caso não existam itens, mantendo o texto centralizado e limpo
+                personagensContainer.classList.remove("card-group");
+                personagensContainer.innerHTML = `<p class="text-muted ps-2">Nenhum personagem associado cadastrado para esta obra.</p>`;
+            }
+        });
+    </script>
+
 </body>
 </html>
